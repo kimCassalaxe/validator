@@ -1,45 +1,36 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Colors } from "@/src/color/Colors";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import {  Tabs } from "expo-router";
+import { StyleSheet } from "react-native";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+export default function TabsLayout() {
+  return (  
+    <>
+    <Tabs  
+    screenOptions={
+      {
+        headerShown: false ,
+        headerStyle:{backgroundColor:Colors.background,},
+        headerTitleStyle: { color: Colors.text.color },
+        headerTitleAlign:"center",
+        tabBarActiveTintColor:Colors.text.color,
+        tabBarInactiveTintColor:Colors.plasholdr,
+        tabBarStyle:{backgroundColor:Colors.tabBar}
+      }} >
+    <Tabs.Screen name="home" options={{title: 'home',tabBarIcon:({color,focused,size})=>(<MaterialIcons name="home"  size={size} color={focused?Colors.text.color:Colors.plasholdr} />)}} />
+    <Tabs.Screen name="dashbord"  options={{
+      headerShown: true ,
+      title: 'Dashboard',
+      tabBarIcon:({color,focused,size})=>(<Entypo name="bar-graph" size={size} color={focused?Colors.text.color:Colors.plasholdr}  />)}} />
+    <Tabs.Screen name="user" options={{headerShown: true ,title: 'User',tabBarIcon:({color,focused,size})=>(<MaterialIcons name="person" size={size} color={focused?Colors.text.color:Colors.plasholdr}  />)}} />
     </Tabs>
+  </>
   );
+
 }
+const styles = StyleSheet.create({
+  header:{
+  backgroundColor:Colors.background, 
+  alignItems:'center'
+  }
+})
