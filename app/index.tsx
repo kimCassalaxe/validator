@@ -8,5 +8,6 @@ import { Redirect } from "expo-router";
 
 
 export default function index(){    
-   return <Redirect href="/home" />;
+  return <Redirect href="/autenticacao/login" />;
+  //return <Login/>
 }

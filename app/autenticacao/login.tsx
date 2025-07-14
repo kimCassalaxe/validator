@@ -1,15 +1,24 @@
 import { Colors } from "@/src/color/Colors";
-import React from "react"
-import { Image, StyleSheet, Text, View } from "react-native"
+import Btn from "@/src/components/Btn";
+import InputsValuers from "@/src/components/InputsValuers";
+import Link from "@/src/components/Link";
+import React, { useState } from "react"
+import { Image, StyleSheet, Text, TextInput, View } from "react-native"
 
 export default function login(){
+  const [login,setLogin] = useState('');
+  const [senha,setSenha] = useState('');
     return(
         <View style={styles.container}>
-          <Image 
-                    source={require('@/assets/images/f1.jpg')}
-                    style={styles.f} 
-                  />
-            <Text>Login</Text>
+          <View style={styles.loginBox}>
+            <InputsValuers  elements={styles.styleBox} value={login} placeholder="carlos@exemplo.com" onChangeText={setLogin} />
+            <InputsValuers password={true} elements={styles.styleBox} value={senha} placeholder="carlos@exemplo.com" onChangeText={setSenha} />
+          </View>
+          <Btn styleText={styles.text} onPress={()=>{}} text="Enter" />
+            <View style={styles.linkBox}>
+              <Link text="Ainda tenho uma conta" url={'/autenticacao/cadastro'}/>
+              <Link text="Esqueci minha senha" url={'/'}/>
+          </View>
         </View>
     );
 }
@@ -19,26 +28,35 @@ container: {
     flex:1,
     justifyContent:'center',
     alignItems:'center',
-    padding: 5,
+    padding: 15,
     paddingBottom: 100,
+  },loginBox:{
+    marginBottom:30,
+    width:"100%",
+    backgroundColor:Colors.card,
+    gap:30,
+    borderRadius:5,
+
+  },styleBox:{
+     width:"100%",
+    backgroundColor:Colors.input,
+    borderRadius:5,
+    padding:10,
+    fontSize:18,
+
   },
   text: {
-        color: Colors.text.color,
+   
+    width:"100%",
+      textAlign:"center",
+    color: Colors.text.color,
         fontSize: 16,  
     },
-  elements: {
-    backgroundColor:Colors.intup,
-    width: "30%",
-     padding:10,
-    borderRadius:15,
-    margin: 0,
-  },f:{
-    backgroundColor:"red",
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:100,
-    width:"100%",
-    height:"100%",
-    marginVertical:20,
-  }
+    linkBox:{
+      marginTop:10,
+      flexDirection:"row",
+      width:"100%",
+      justifyContent:"space-between",
+      color:Colors.text.color,
+    },
 });

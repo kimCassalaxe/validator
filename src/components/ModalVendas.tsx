@@ -32,7 +32,7 @@ const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
   return (
     <View style={styles.modal}>
         <Text style={styles.titles}>Valores de Vendas</Text>
-        <InputsValuers text="Vendas pelo MultCaixa" placeholder="Multcaixa" value={pro.multicaixa.toString()} onChangeText={pro.setMulticaixa} keyboardType="numeric" />
+        <InputsValuers  text="Vendas pelo MultCaixa" placeholder="Multcaixa" value={pro.multicaixa.toString()} onChangeText={pro.setMulticaixa} keyboardType="numeric" />
         <InputsValuers text="Vendas pelo Codigo QR" placeholder="Codigo QR" value={pro.codigoQR.toString()} onChangeText={pro.setCodigoQR} keyboardType="numeric" />
         <InputsValuers text="Vendas pelo Frota +" placeholder="Frota +" value={pro.frota.toString()} onChangeText={pro.setFrota} keyboardType="numeric" />
         <InputsValuers text="Total das Sagrias periodicas" placeholder="Total das Sagrias periodicas" value={pro.totalSagriasPeriodica.toString()} onChangeText={pro.setTotalSagriasPeriodica} keyboardType="numeric" />

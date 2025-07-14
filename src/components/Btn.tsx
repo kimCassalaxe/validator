@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 type prop = {
     text: string, 
     onPress: any,
-    icon:any,
+    icon?:any,
     styleText?: any
     styleBtn?:any,
 }
@@ -22,9 +22,10 @@ export default function Index(props: prop) {
 const styles = StyleSheet.create({
 
   btn: {
+    width:"100%",
     backgroundColor: Colors.btn,
     padding: 10,
-    borderRadius: 50,
+    borderRadius: 5,
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,

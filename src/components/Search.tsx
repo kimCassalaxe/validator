@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:"flex-start",
     alignItems:'center',
-    backgroundColor: Colors.intup,
+    backgroundColor: Colors.input,
     padding: 8,
     borderRadius: 10,
     marginVertical: 10,

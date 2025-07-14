@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
     borderRadius:15,
     padding:10,
     fontWeight:'bold',
-    backgroundColor:Colors.intup
+    backgroundColor:Colors.input
   },
 });
