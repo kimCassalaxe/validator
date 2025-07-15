@@ -7,7 +7,7 @@ export const Colors = {
     success: "#00ff00",
     warning: "#ff9800",
     btn: "#0A80ED",
-    background: "#121417",
+    background: "#121417",//2B3036
     input:'#293038',
     plasholdr:'#9CABBA',
     card: "#0F1A24",

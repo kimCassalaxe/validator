@@ -1,9 +1,15 @@
 import { Colors } from "@/src/color/Colors";
 import Btn from "@/src/components/Btn";
 import { router } from "expo-router";
+import { useEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function User() {
+
+  useEffect(()=>{
+    
+  }
+  ,[]);
   return (
     <View style={styles.container}>
       <View style={styles.perfil}>

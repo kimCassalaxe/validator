@@ -2,8 +2,19 @@
 
 
 
+export type LoginUser = {
+    senha:string,
+    email:string,
 
-
+}
+export type User = {
+    id:number,
+    nome:string,
+    email:string,
+    senha:string,
+    foto:string,
+    posto:string
+}
 export type BombaNumbre = [1,2,3,4,5,6,7,8,9,10];
 
 export type Bico = {
