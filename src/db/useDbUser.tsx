@@ -1,4 +1,4 @@
-import { LoginUser, User } from "../types/Types";
+import { LoginUser, passwordUpdate, User } from "../types/Types";
 import { getDb } from "./dbInit";
 
 // `runAsync()` is useful when you want to execute some write operations.
@@ -26,6 +26,14 @@ import { getDb } from "./dbInit";
             user.mecanografico?user.mecanografico:'',
             user.id
         ]); 
+ }
+
+
+ 
+ export async function passwordUpdateUser(senhas:passwordUpdate){
+    const db =  await getDb()
+     await db.runAsync('UPDATE usuario SET senha=? WHERE id = ?', 
+        [senhas.novaSenha, senhas.velhaSenha]); 
  }
  export async function deleteUsuario(id:number){    
     const db =  await getDb()

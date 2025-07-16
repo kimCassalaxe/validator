@@ -2,12 +2,27 @@ import { Colors } from "@/src/color/Colors";
 import Card from "@/src/components/Card";
 import Item from "@/src/components/Item";
 import Search from "@/src/components/Search";
-import { useState } from "react";
+import { getAllTurnos } from "@/src/db/useDbTurno";
+import { Turno } from "@/src/types/Types";
+import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+
 
 export default function Dashbord() {
   const [search,setSearch]= useState('')
-  const dados = [1,2,3,45,6,7,3,45,57,8,6]
+  const [dados,setDados] = useState<Turno[]|null>(null)
+  const getlist = async()=>{
+    const list = await getAllTurnos();
+    return list;
+  }
+  useEffect( ()=>{
+    (async ()=>{
+      const lista = await getlist()
+      setDados(lista)
+      console.log(dados)
+    })();
+      
+  },[]);
   return (
     <View style={styles.container}>
       <Text style={styles.titles}>Vendas do Ultimo Turno</Text>

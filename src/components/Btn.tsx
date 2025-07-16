@@ -14,7 +14,7 @@ export default function Index(props: prop) {
         <>
         <TouchableOpacity style={!props.styleBtn?styles.btn:props.styleBtn} onPress={props.onPress}>
             <Text style={!props.styleText?styles.btnText:props.styleText}>{props.text}</Text>
-            <MaterialIcons name={props.icon} size={24} color={Colors.secondary} />
+            <MaterialIcons name={props.icon} size={24} color={Colors.text.color} />
         </TouchableOpacity>
         </>
     );

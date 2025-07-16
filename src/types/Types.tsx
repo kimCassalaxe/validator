@@ -1,5 +1,14 @@
 
 
+
+
+
+
+export type passwordUpdate={
+    velhaSenha:string;
+    novaSenha:string;
+    confirmarSenha:string;
+}
 export type UserContextType = {
     user:User | null,
     setUser:(user:User|null) => void;
@@ -27,14 +36,23 @@ export type Bico = {
     fecho:number,
 }
 export type Bomba = {
-    n:number
+    n:number,
     gasoleo:Bico,
     gasolina1:Bico,
     gasolina2:Bico,
 }
+export type Bombas = {
+    id:number,
+    n:number,
+    gasoleo:number,
+    gasolina1:number,
+    gasolina2:number,
+}
 
 export type Turno = {
-    bombas: Bomba[],
+    id?:number,
+    bombas: Bomba[]|string,
+    usuario:number,
     multicaixa: number,
     codigoQR: number,
     frota: number,

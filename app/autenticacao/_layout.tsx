@@ -1,8 +1,10 @@
 import React from "react";
-import {  Stack, Tabs } from "expo-router";
+import {  Stack, Tabs, useRouter } from "expo-router";
 import { Colors } from "@/src/color/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function layout() {
+  const router = useRouter() 
   return (  
     <Stack
     screenOptions={
@@ -15,6 +17,7 @@ export default function layout() {
           }} >
       <Stack.Screen name="login" options={{title:"Login"}} />
       <Stack.Screen name="cadastro" options={{title:"Cadastro"}} />
+      <Stack.Screen name="recuperarSenha" options={{title:"Recuperar Senha"}} />
     </Stack>
 
   );

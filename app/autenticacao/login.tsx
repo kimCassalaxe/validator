@@ -42,7 +42,7 @@ export default function login(){
           <Btn styleText={styles.text} onPress={()=>{hendleLogin()}} text="Enter" />
           <View style={styles.linkBox}>
             <Link text="Ainda tenho uma conta" url={'/autenticacao/cadastro'}/>
-            <Link text="Esqueci minha senha" url={'/'}/>
+            <Link text="Esqueci minha senha" url={'/autenticacao/recuperarSenha'}/>
           </View>
         </View>
     );

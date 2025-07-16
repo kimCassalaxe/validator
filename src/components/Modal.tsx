@@ -53,7 +53,7 @@ export default function Index(pro: props) {
         fecho={pro.fecho3}
         setFecho={pro.setFecho3}
       />      
-      <Btn icon={"save"} text="Salvar dos dados" onPress={pro.save}></Btn>
+      <Btn icon={"arrow-forward"} text="Savançar" onPress={pro.save}></Btn>
     </View>
   );
 }

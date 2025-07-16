@@ -26,7 +26,7 @@ useEffect(() => {
   }, [users]);
   return (
 
-      <Redirect  href="/autenticacao/login" />
+      <Redirect  href="/(tabs)/home" />
   );
 
 }

@@ -20,13 +20,14 @@ interface props {
   setTotalSagrias: any;
   valordoEsperado?:number;
   valordoApresentado?:number;
-  visible?: boolean;
-  
+  visibleModel?: boolean;
+  visibleSave?: boolean;
   onClose?: () => void;
+  calc?:any;
   save?:any;
 };
 export default function Index(pro: props) {
-  if (pro.visible === false) return null;
+  if (pro.visibleModel === false) return null;
 
 const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
   return (
@@ -36,7 +37,7 @@ const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
         <InputsValuers text="Vendas pelo Codigo QR" placeholder="Codigo QR" value={pro.codigoQR.toString()} onChangeText={pro.setCodigoQR} keyboardType="numeric" />
         <InputsValuers text="Vendas pelo Frota +" placeholder="Frota +" value={pro.frota.toString()} onChangeText={pro.setFrota} keyboardType="numeric" />
         <InputsValuers text="Total das Sagrias periodicas" placeholder="Total das Sagrias periodicas" value={pro.totalSagriasPeriodica.toString()} onChangeText={pro.setTotalSagriasPeriodica} keyboardType="numeric" />
-        <Btn icon="save" text="Salvar dos dados" onPress={pro.save}/>
+        <Btn icon="autorenew" text="Calcular Sangria Final" onPress={pro.calc}/>
         <InputsValuers text="Total das Sagrias" placeholder={valid.toString()} value={pro.totalSagrias.toString()} onChangeText={pro.setTotalSagrias} keyboardType="numeric" />
       
       <View>
@@ -44,6 +45,11 @@ const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
         <Text style={styles.text}>Valor do Apresentado: <Text style={valid>=0? styles.textValido:styles.textNValido}>{ pro.valordoApresentado}</Text></Text>
         
       </View>
+      {
+        pro.visibleSave?(<Btn styleBtn={styles.btn} icon="save" text="Salvar os dados do Turno" onPress={pro.save}/>):<></>
+      }
+      
+      
     </View>
   );
 }
@@ -60,6 +66,16 @@ const styles = StyleSheet.create({
     fontWeight:"bold",
     marginBottom: 10,
     color: Colors.text.color,
+  },btn: {
+    width:"100%",
+    backgroundColor: Colors.success,
+    padding: 10,
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
+    alignItems: "center",
+    marginVertical: 0,
   },
     text: {
         color: Colors.text.color,

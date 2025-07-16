@@ -1,0 +1,50 @@
+import {  Bombas, } from "../types/Types";
+import { getDb } from "./dbInit";
+
+// `runAsync()` is useful when you want to execute some write operations.
+ export async function addBomba(bomba:Bombas){
+     const db =  await getDb()
+     const result = await db.runAsync('INSERT INTO bombas(numero,gasoleo,gasolina1,gasolina2) VALUES (?, ?, ?, ?)',
+        [   bomba.n,
+            bomba.gasoleo,
+            bomba.gasolina1,
+            bomba.gasolina2
+        ]);
+     return result.lastInsertRowId
+ }
+ export async function updateBomba(bomba:Bombas){
+    const db =  await getDb()
+     await db.runAsync(
+        'UPDATE bombas SET n=? gasoleo=? gasolina1=? gasolina2=? WHERE id = ?', 
+        [   bomba.n,
+            bomba.gasoleo,
+            bomba.gasolina1,
+            bomba.gasolina2,
+            bomba.id,            
+        ]); 
+ }
+
+
+ export async function deleteBomba(id:number){    
+    const db =  await getDb()
+     await db.runAsync('DELETE FROM bombas WHERE id = ?',id); // Binding named parameters from object
+ }
+
+ export async function getAllBombas():Promise<Bombas[]|null>{ 
+    //db recebe a conexao
+    const db =  await getDb()
+    try {
+        // getAllAsync() retorna um array de turnos.
+        const allRows:Bombas[]|null = await db.getAllAsync('SELECT * FROM bomba');
+        let bombas:Bombas[] =[]
+        if(allRows){
+        return bombas = allRows.map((item)=>(item));
+        }else{return []}
+    } catch (error) {
+        console.error("Erro ao buscar dos Bombas:", error);
+        return null
+        
+    }     
+}
+
+ 

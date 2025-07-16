@@ -2,32 +2,66 @@ import { Colors } from "@/src/color/Colors";
 import Btn from "@/src/components/Btn";
 import Modal from "@/src/components/Modal";
 import ModalVendas from "@/src/components/ModalVendas";
-import { Bico, Bomba, Turno } from "@/src/types/Types";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useUser } from "@/src/contexts/userContext";
+import { addBico } from "@/src/db/useDbBico";
+import { addBomba } from "@/src/db/useDbBomba";
+import { addTurno } from "@/src/db/useDbTurno";
+import { Bico, Bomba, Turno, User, } from "@/src/types/Types";
+import { Redirect, router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet,} from "react-native";
 
+
+async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
+  console.log('feito1')
+  if(user){
+    console.log('feito')
+  if(bombas){
+    try {
+      const ids = await Promise.all( 
+        bombas.map(async (bomba)=>{
+        const idBico1 = await addBico({n:bomba.gasoleo.n,abertura:bomba.gasoleo.abertura,fecho:bomba.gasoleo.fecho})
+        const idBico2 = await addBico({n:bomba.gasolina1.n,abertura:bomba.gasolina1.abertura,fecho:bomba.gasolina1.fecho})
+        const idBico3 = await addBico({n:bomba.gasolina2.n,abertura:bomba.gasolina2.abertura,fecho:bomba.gasolina2.fecho})
+        const idbomba = await addBomba({n:bomba.n,gasoleo:idBico1,gasolina1:idBico2,gasolina2:idBico3,id:0})
+
+        return idbomba;
+      })
+    )  
+    const idTurno = await addTurno({
+      bombas:ids.toString(),
+      usuario:turno.usuario,
+      multicaixa:turno.multicaixa,
+      codigoQR:turno.codigoQR,
+      frota:turno.frota,
+      totalSagriasPeriodica:turno.totalSagriasPeriodica,
+      totalSagrias:turno.totalSagrias,
+      data:turno.data})
+      console.log(idTurno)
+    } catch (error) {
+        console.log("ocorreu um erro",error)
+    }
+    
+  }
+  }else{
+    console.log('feit3')
+    return (router.replace("/autenticacao/login"))
+  }
+ 
+}
 function calcularValorEsperado(bombas:Bomba[]){
-    
-    let  result=0
-    bombas.forEach((b,index) => {
-      console.log('=====>',index)
-      console.log('*>',b)
-      const bico1=(Number(b.gasoleo.fecho) - Number(b.gasoleo.abertura));
-      const bico2=(Number(b.gasolina1.fecho) -  Number(b.gasolina1.abertura));
-      const bico3= (Number(b.gasolina2.fecho) -  Number(b.gasolina2.abertura));
-      const v1 = bico1*400;
-      const v2 = bico2*300;
-      const v3 = bico3*300;
-      const r = v1+v2+v3; 
-      
-      result= r+result
-    });
-    
-    return result;
-    
-    
-   // 
+  let  result=0
+  bombas.forEach((b,index) => {
+    const bico1=(Number(b.gasoleo.fecho) - Number(b.gasoleo.abertura));
+    const bico2=(Number(b.gasolina1.fecho) -  Number(b.gasolina1.abertura));
+    const bico3= (Number(b.gasolina2.fecho) -  Number(b.gasolina2.abertura));
+    const v1 = bico1*400;
+    const v2 = bico2*300;
+    const v3 = bico3*300;
+    const r = v1+v2+v3; 
+    result= r+result
+  });
+  return result;
 }
 function calcularValorApresentar(turno:Turno){
   return(
@@ -38,9 +72,10 @@ function calcularValorApresentar(turno:Turno){
   )
 }
 
-  const calcularValoresDoTurno = (bombas:Bomba[], multicaixa:number, codigoQR:number, frota:number, totalSagriasPeriodica:number) => {
+  const calcularValoresDoTurno = (bombas:Bomba[],usuario:number, multicaixa:number, codigoQR:number, frota:number, totalSagriasPeriodica:number) => {
       const turno = {
-      bombas: bombas,
+      bombas: bombas, 
+      usuario:usuario,
       multicaixa: multicaixa,
       codigoQR: codigoQR,
       frota: frota,
@@ -51,15 +86,14 @@ function calcularValorApresentar(turno:Turno){
     return turno;
   }
 
-  function save(abertuda1: string ,fecho1: string,abertuda2: string,fecho2: string,abertuda3: string,fecho3: string,nBomba1:number){
+  function save(bico1:Bico ,bico2:Bico ,bico3:Bico ,nBomba1:number){
     
-    if(abertuda1 && fecho1 && abertuda2 && fecho2 && abertuda3 && fecho3 && nBomba1){  
+    if(bico1 && bico2 && bico3 && nBomba1){  
     const bomba:Bomba={
       n: nBomba1,
-      gasoleo: {n:1,abertura:Number(abertuda1),fecho:Number(fecho1)},
-      gasolina1: {n:2,abertura:Number(abertuda2),fecho:Number(fecho2)},
-      gasolina2: {n:3,abertura:Number(abertuda3),fecho:Number(fecho3)}  ,
-      
+      gasoleo: {n:bico1.n,abertura:Number(bico1.abertura),fecho:Number(bico1.fecho)},
+      gasolina1: {n:bico2.n,abertura:Number(bico2.abertura),fecho:Number(bico2.fecho)},
+      gasolina2: {n:bico3.n,abertura:Number(bico3.abertura),fecho:Number(bico3.fecho)}      
     };
     return bomba;
     
@@ -95,12 +129,13 @@ export default function Home() {
   
  
   const [visible, setVisible] = useState(false);
+  const [visibleSave, setVisibleSave] = useState(false);
   const [bombas,setBombas] =useState<Bomba[]>([]);
-  const [turno, setTurno] = useState<Turno>();
+  const [turno, setTurno] = useState<Turno|null>(null);
   const [totalEsperado, setTotalEsperado] = useState<number>(0);
   const [totalApresentado,setTotalApresentado] = useState(0);
 
-
+  const {user} = useUser()
 
 //cacula o valor esperodo para o turno
 
@@ -131,9 +166,9 @@ useEffect(()=>{
         save={()=>{
           setBombas((prev)=>{
             const novaBomba = save(
-              abertuda1,fecho1,
-              abertuda2,fecho2,
-              abertuda3,fecho3,
+              {n:1,abertura:Number(abertuda1),fecho:Number(fecho1)},
+              {n:2,abertura:Number(abertuda2),fecho:Number(fecho2)},
+              {n:3,abertura:Number(abertuda3),fecho:Number(fecho3)},
               nBomba1
           );
         if(!novaBomba) return prev;
@@ -164,9 +199,9 @@ useEffect(()=>{
         save={()=>{
           setBombas((prev)=>{
             const novaBomba = save(
-              sAbertuda1,sFecho1,
-              sAbertuda2,sFecho2,
-              sAbertuda3,sFecho3,
+              {n:1,abertura:Number(sAbertuda1),fecho:Number(sFecho1)},
+              {n:2,abertura:Number(sAbertuda2),fecho:Number(sFecho2)},
+              {n:3,abertura:Number(sAbertuda3),fecho:Number(sFecho3)},
               nBomba2
           );
         if(!novaBomba) return prev;
@@ -178,7 +213,13 @@ useEffect(()=>{
       }}// metodo que salva os ddos da segunda bomba
       />
       
-      {bombas[0]?(<Btn icon={visible ? "close" : "add"} text={visible ? "Fechar esta Bomba" : "Abrir outra Bomba"} onPress={() => {setVisible(visible? false : true)}}/>):<></>}
+      
+      {bombas[0]?
+        (<Btn icon={visible ? "close" : "add"} 
+          text={visible ? "Fechar esta Bomba" : "Abrir outra Bomba"} 
+          onPress={() => {setVisible(visible? false : true)}}/>):
+        <></>
+      }
       
       <ModalVendas 
       multicaixa={multicaixa} 
@@ -193,12 +234,19 @@ useEffect(()=>{
       setTotalSagrias={setTotalSagrias} 
       valordoEsperado={bombas ? totalEsperado : 0}
       valordoApresentado={turno?totalApresentado:0}
-      save={()=>{setTurno(calcularValoresDoTurno(bombas,
+      calc={()=>{setTurno(calcularValoresDoTurno(bombas,
         multicaixa,
+        user?user.id:0,
         codigoQR,
         frota,
-        totalSagriasPeriodica))}}
-    />
+        totalSagriasPeriodica))
+        setVisibleSave(true)
+      }}
+      visibleSave={visibleSave}
+      save={()=>{
+        if(turno)hendleSave(bombas,turno, user)}}
+      />
+    
     </ScrollView>
       
 
@@ -211,14 +259,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     padding: 5,
     paddingBottom: 100,
-  },
-  modal: {
-    backgroundColor: Colors.secondary,
-    padding: 20,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  
+  },  
   btn:{
     backgroundColor: Colors.primary,
     padding: 10,
@@ -241,7 +282,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   btnText:{
-    color: Colors.secondary,
+    color: Colors.text.color,
     fontSize: 16,
     fontWeight: "bold",
   },
