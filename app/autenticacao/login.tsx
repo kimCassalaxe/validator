@@ -2,16 +2,17 @@ import { Colors } from "@/src/color/Colors";
 import Btn from "@/src/components/Btn";
 import InputsValuers from "@/src/components/InputsValuers";
 import Link from "@/src/components/Link";
+import { useUser } from "@/src/contexts/userContext";
 import { getLoginUser } from "@/src/db/useDbUser";
-import { LoginUser, User } from "@/src/types/Types";
 import { useRouter } from "expo-router";
 import React, { useState } from "react"
-import { Alert, Image, StyleSheet, Text, TextInput, View } from "react-native"
+import { Alert, Image, StyleSheet, View } from "react-native"
 
 export default function login(){
   const [email,setEmail] = useState('');
   const [senha,setSenha] = useState('');
   const router = useRouter()
+  const {setUser} = useUser();
 
   async function hendleLogin(){
     if(email.trim() && senha.trim()){
@@ -19,8 +20,8 @@ export default function login(){
         const user = await getLoginUser({email:email,senha:senha})
         console.log(user)
         if(user){
-          //Alert.alert("email ou senha incorretos")
-          router.push({pathname:'/(tabs)/home',params:user});
+          setUser(user)
+          router.push('/(tabs)/home');
         }else{
           Alert.alert("email ou senha incorretos")
         }
@@ -39,9 +40,9 @@ export default function login(){
             <InputsValuers password={true} elements={styles.styleBox} value={senha} placeholder="*****" onChangeText={setSenha} />
           </View>
           <Btn styleText={styles.text} onPress={()=>{hendleLogin()}} text="Enter" />
-            <View style={styles.linkBox}>
-              <Link text="Ainda tenho uma conta" url={'/autenticacao/cadastro'}/>
-              <Link text="Esqueci minha senha" url={'/'}/>
+          <View style={styles.linkBox}>
+            <Link text="Ainda tenho uma conta" url={'/autenticacao/cadastro'}/>
+            <Link text="Esqueci minha senha" url={'/'}/>
           </View>
         </View>
     );

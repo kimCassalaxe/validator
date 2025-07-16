@@ -1,6 +1,9 @@
 
 
-
+export type UserContextType = {
+    user:User | null,
+    setUser:(user:User|null) => void;
+}
 
 export type LoginUser = {
     senha:string,
@@ -12,8 +15,9 @@ export type User = {
     nome:string,
     email:string,
     senha:string,
-    foto:string,
-    posto:string
+    mecanografico?:string,
+    foto?:string,
+    posto?:string
 }
 export type BombaNumbre = [1,2,3,4,5,6,7,8,9,10];
 

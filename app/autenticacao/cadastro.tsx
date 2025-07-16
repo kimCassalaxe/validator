@@ -9,14 +9,14 @@ import { Alert, StyleSheet, Text, View } from "react-native"
 
 export default function cadastro(){
   const [name,setName] = useState('');
-  const [login,setLogin] = useState('');
+  const [email,setEmail] = useState('');
   const [senha,setSenha] = useState('');
 
   async function hendleCadastrar(){
-    if(name.trim() && login.trim() &&senha.trim()){
+    if(name.trim() && email.trim() &&senha.trim()){
       try {
         
-        const user :User = {id:1,email:login,foto:'',nome:name,posto:'',senha:senha}
+        const user :User = {id:1,email:email,foto:'',nome:name,posto:'',senha:senha}
         const result = await addUsuario(user);
         console.log(user)
         Alert.alert('sucesso',result.toString())
@@ -33,7 +33,7 @@ export default function cadastro(){
         <View style={styles.container}>
           <View style={styles.loginBox}>
             <InputsValuers  elements={styles.styleBox} value={name} placeholder="carlos duart" onChangeText={setName} />
-            <InputsValuers  elements={styles.styleBox} value={login} placeholder="carlos@exemplo.com" onChangeText={setLogin} />
+            <InputsValuers  elements={styles.styleBox} value={email} placeholder="carlos@exemplo.com" onChangeText={setEmail} />
             <InputsValuers password={true} elements={styles.styleBox} value={senha} placeholder="carlos@exemplo.com" onChangeText={setSenha} />
           </View>
           <Btn styleText={styles.text} onPress={()=>{hendleCadastrar()}} text="Enter" />
@@ -64,7 +64,7 @@ container: {
     borderRadius:5,
     padding:10,
     fontSize:18,
-
+    color: Colors.text.color,
   },
   text: {
    

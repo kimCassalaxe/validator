@@ -45,22 +45,10 @@ export async function getDb() {
       email TEXT NOT NULL,
       senha TEXT NOT NULL,
       foto TEXT,
-      posto TEXT
+      posto TEXT,
+      mecanografico TEXT
     );
  `);
-   // Verificar se já existe usuário antes de inserir
-  // const firstUser = await db.getFirstAsync('SELECT * FROM usuario');
-  // if (!firstUser) {
-  //   await db.runAsync(
-  //     'INSERT INTO usuario (nome,email,senha,foto,posto) VALUES (?,?,?,?,?)',
-  //     ['Carlos Eduardo', 'carloseduardo@gmail.com', '1234', '', '']
-  //   );
-  //   console.log("Usuário padrão inserido.");
-  // } else {
-  //   console.log("Usuário já existe, não precisa inserir.");
-  // }
-
-  // console.log("Banco de dados inicializado com sucesso!");
 
  }
  

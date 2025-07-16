@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
   elements: {
     backgroundColor:Colors.input,
     width: "30%",
-     padding:10,
+    padding:10,
     borderRadius:15,
     margin: 0,
+    color:Colors.text.color,
   }
   ,
 });

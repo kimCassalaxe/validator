@@ -9,7 +9,9 @@ export default function layout() {
           {
             headerStyle:{backgroundColor:Colors.background,},
             headerTitleStyle: { color: Colors.text.color },
-            headerTitleAlign:"center"
+            headerTitleAlign:"center",
+            headerBackButtonMenuEnabled:true,
+            
           }} >
       <Stack.Screen name="login" options={{title:"Login"}} />
       <Stack.Screen name="cadastro" options={{title:"Cadastro"}} />

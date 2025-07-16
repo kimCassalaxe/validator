@@ -1,36 +1,56 @@
 import { Colors } from "@/src/color/Colors";
+import Alert from "@/src/components/Alert";
 import Btn from "@/src/components/Btn";
-import { router } from "expo-router";
-import { useEffect } from "react";
+import { useUser } from "@/src/contexts/userContext";
+import { Redirect, useRouter } from "expo-router";
+import {useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-export default function User() {
 
+export default function User() {
+  const routes = useRouter()
+  const {user,setUser} = useUser()
+  const [visible,setVisibe] = useState(false)
+
+  function hadleLogout(){
+    setUser(null); //remove o usuario logado 
+    routes.push("/home")//redireciona para tela  home
+  }
   useEffect(()=>{
-    
+   
   }
   ,[]);
-  return (
-    <View style={styles.container}>
+//se tiver usuario logado a tela de usuario e renderizada
+// se nao e redirecionado para tela de login
+    if(user){
+        return (
+      <View style={styles.container}>
       <View style={styles.perfil}>
         <View style={styles.modure}>
         <Image 
-          source={require('@/assets/images/f1.jpg')}
+          source={user.foto? require('@/assets/images/f1.jpg'):require('@/assets/images/f1.jpg')}
           style={styles.f} 
         />
         <Btn styleText={styles.btnText} styleBtn={styles.btnEdit} icon={'calendar-month'} onPress={()=>{}} text="editar"/>
       </View>
-      <Text style={styles.text}>Gorge Ventura</Text>
-      <Text style={styles.text}>Numero Mecanografico: <Text style={styles.textValuer}>23423</Text></Text>
-      <Text style={styles.text}>Posto: <Text style={styles.textValuer}>P.A Baia</Text></Text>
+      <Text style={styles.text}>{user.nome}</Text>
+      <Text style={styles.text}>Numero Mecanografico: <Text style={styles.textValuer}>{user.mecanografico?user.mecanografico:"#####"}</Text></Text>
+      <Text style={styles.text}>Email: <Text style={styles.textValuer}>{user.email}</Text></Text>
+      <Text style={styles.text}>Posto: <Text style={styles.textValuer}>{user.posto}</Text></Text>
       </View>
       
 
       <Btn styleText={styles.btnText} styleBtn={styles.btn} icon={'calendar-month'} onPress={()=>{/*router.navigate('/autenticacao/login')*/}} text="Ver escala"/>
         <Btn styleText={styles.btnText} styleBtn={styles.btn} icon={'arrow-forward'} onPress={()=>{}} text="Ver Produtividade"/>
-      <Btn styleBtn={styles.btnSession} icon={'close'} onPress={()=>{}} text="teminar Sessao"/>
-    </View>
-  );
+      <Btn styleBtn={styles.btnSession} icon={'close'} onPress={()=>{ hadleLogout()}} text="teminar Sessao"/>
+    </View>)
+
+    }else{
+        return (
+      <Redirect  href="/autenticacao/login" />
+        );
+    }
+
 }
 const styles = StyleSheet.create({
   container: {

@@ -1,13 +1,13 @@
-import { Redirect, router } from "expo-router";
-import { useEffect, useState } from "react";
+import { Redirect} from "expo-router";
+import React ,{ useEffect, useState } from "react";
 import {initDb } from "@/src/db/dbInit";
 import { User } from "@/src/types/Types";
 import { getAllUsers } from "@/src/db/useDbUser";
+import { UserProvider } from "@/src/contexts/userContext";
 
 
 
 export default function index(){
-  const [user,setUser] = useState<User|null|undefined>(null)
   const [users,setUsers] = useState<User[]|null>(null)
   
   
@@ -25,6 +25,8 @@ useEffect(() => {
     console.log('Users atualizados no state:', users);
   }, [users]);
   return (
-  <Redirect  href="/autenticacao/login" />);
-  //return <Login/>
+
+      <Redirect  href="/autenticacao/login" />
+  );
+
 }
