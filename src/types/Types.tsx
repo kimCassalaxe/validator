@@ -41,6 +41,12 @@ export type Bomba = {
     gasolina1:Bico,
     gasolina2:Bico,
 }
+export type BombaDB = {
+    n:number,
+    gasoleo:number,
+    gasolina1:number,
+    gasolina2:number,
+}
 export type Bombas = {
     id:number,
     n:number,
@@ -50,8 +56,19 @@ export type Bombas = {
 }
 
 export type Turno = {
-    id?:number,
+    id:number,
     bombas: Bomba[]|string,
+    usuario:number,
+    multicaixa: number,
+    codigoQR: number,
+    frota: number,
+    totalSagriasPeriodica: number,
+    totalSagrias: number,
+    data: string,
+}
+export type TurnoStorge = {
+    id:number,
+    bombas: string,
     usuario:number,
     multicaixa: number,
     codigoQR: number,

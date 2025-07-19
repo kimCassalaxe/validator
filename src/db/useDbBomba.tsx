@@ -1,18 +1,19 @@
-import {  Bombas, } from "../types/Types";
+import { BombaDB, Bombas, } from "../types/Types";
 import { getDb } from "./dbInit";
 
 // `runAsync()` is useful when you want to execute some write operations.
- export async function addBomba(bomba:Bombas){
+ export async function addBomba(bomba:BombaDB){
      const db =  await getDb()
-     const result = await db.runAsync('INSERT INTO bombas(numero,gasoleo,gasolina1,gasolina2) VALUES (?, ?, ?, ?)',
+     const result = await db.runAsync(
+        'INSERT INTO bombas(numero,gasoleo,gasolina1,gasolina2) VALUES (?, ?, ?, ?)',
         [   bomba.n,
             bomba.gasoleo,
             bomba.gasolina1,
             bomba.gasolina2
         ]);
-     return result.lastInsertRowId
+     return result.lastInsertRowId as number
  }
- export async function updateBomba(bomba:Bombas){
+ export async function updateBomba(bomba:BombaDB){
     const db =  await getDb()
      await db.runAsync(
         'UPDATE bombas SET n=? gasoleo=? gasolina1=? gasolina2=? WHERE id = ?', 
@@ -20,7 +21,7 @@ import { getDb } from "./dbInit";
             bomba.gasoleo,
             bomba.gasolina1,
             bomba.gasolina2,
-            bomba.id,            
+                        
         ]); 
  }
 
@@ -34,8 +35,7 @@ import { getDb } from "./dbInit";
     //db recebe a conexao
     const db =  await getDb()
     try {
-        // getAllAsync() retorna um array de turnos.
-        const allRows:Bombas[]|null = await db.getAllAsync('SELECT * FROM bomba');
+        const allRows:Bombas[]|null = await db.getAllAsync('SELECT * FROM bombas');
         let bombas:Bombas[] =[]
         if(allRows){
         return bombas = allRows.map((item)=>(item));

@@ -2,6 +2,8 @@ import { Colors } from "@/src/color/Colors";
 import Card from "@/src/components/Card";
 import Item from "@/src/components/Item";
 import Search from "@/src/components/Search";
+import { getAllBico } from "@/src/db/useDbBico";
+import { getAllBombas } from "@/src/db/useDbBomba";
 import { getAllTurnos } from "@/src/db/useDbTurno";
 import { Turno } from "@/src/types/Types";
 import { useEffect, useState } from "react";
@@ -11,15 +13,32 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 export default function Dashbord() {
   const [search,setSearch]= useState('')
   const [dados,setDados] = useState<Turno[]|null>(null)
+
   const getlist = async()=>{
     const list = await getAllTurnos();
     return list;
   }
+    const getbombas = async()=>{
+    const listBombas = await getAllBombas();
+    return listBombas;
+  }
+     const getbicos = async()=>{
+    const listBombas = await getAllBico();
+    return listBombas;
+  }
   useEffect( ()=>{
     (async ()=>{
+      const bicos = await getbicos()
       const lista = await getlist()
+      const bom = await getbombas()
+  
+      
       setDados(lista)
-      console.log(dados)
+      console.log('======================================')
+      console.log('bicos',bicos)
+      console.log('Bomba',bom)
+      console.log('Turno',dados)
+      console.log('======================================')
     })();
       
   },[]);

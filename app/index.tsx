@@ -1,6 +1,6 @@
 import { Redirect} from "expo-router";
 import React ,{ useEffect, useState } from "react";
-import {initDb } from "@/src/db/dbInit";
+import {initDb, limparTabela } from "@/src/db/dbInit";
 import { User } from "@/src/types/Types";
 import { getAllUsers } from "@/src/db/useDbUser";
 import { UserProvider } from "@/src/contexts/userContext";
@@ -14,6 +14,7 @@ export default function index(){
 useEffect(() => {
     (async () => {
       await initDb();
+      //limparTabela();
       const userList = await getAllUsers();
       setUsers(userList);
       console.log('Usuários buscados do banco:', userList);

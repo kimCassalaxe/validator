@@ -9,7 +9,7 @@ export async function addBico(bico:Bico){
             bico.abertura,
             bico.fecho,
         ]);
-     return result.lastInsertRowId
+     return result.lastInsertRowId as number;
  }
 export async function updateBico(bico:Bico,id:number){
     const db =  await getDb()
@@ -24,7 +24,8 @@ export async function updateBico(bico:Bico,id:number){
 
 export async function deleteBico(id:number){    
     const db =  await getDb()
-     await db.runAsync('DELETE FROM bico WHERE id = ?',id);
+    const result = await db.runAsync('DELETE FROM bico WHERE id = ?',id);
+    return result.lastInsertRowId as number
  }
 
 export async function getAllBico():Promise<Bico[]|null>{ 

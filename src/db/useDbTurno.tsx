@@ -1,12 +1,12 @@
-import { Turno,} from "../types/Types";
+import { Turno, TurnoStorge,} from "../types/Types";
 import { getDb } from "./dbInit";
 
 // `runAsync()` is useful when you want to execute some write operations.
- export async function addTurno(turno:Turno){
+ export async function addTurno(turno:TurnoStorge){
      const db =  await getDb()
      const result = await db.runAsync(
         'INSERT INTO turno (bombas,usuario,multicaixa,codigoQR,frota,totalSagriasPeriodica,totalSagrias,data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [   turno.bombas.toString(),
+        [   turno.bombas,
             turno.usuario,
             turno.multicaixa,
             turno.codigoQR,
@@ -15,13 +15,13 @@ import { getDb } from "./dbInit";
             turno.totalSagrias,
             turno.data
         ]);
-     return result.lastInsertRowId
+     return result.lastInsertRowId as number;
  }
- export async function updateTurno(turno:Turno){
+ export async function updateTurno(turno:TurnoStorge){
     const db =  await getDb()
      await db.runAsync(
         'UPDATE turno SET bombas=? usuario=? multicaixa=? codigoQR=? frota=? totalSagriasPeriodica=? totalSagrias=? WHERE id = ?', 
-        [   turno.bombas.toString(),
+        [   turno.bombas,
             turno.usuario,
             turno.multicaixa,
             turno.codigoQR,
@@ -29,7 +29,7 @@ import { getDb } from "./dbInit";
             turno.totalSagriasPeriodica,
             turno.totalSagrias,
             turno.data,
-            turno.id?turno.id:'',            
+            turno.id,            
         ]); 
  }
 

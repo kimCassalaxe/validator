@@ -3,105 +3,10 @@ import Btn from "@/src/components/Btn";
 import Modal from "@/src/components/Modal";
 import ModalVendas from "@/src/components/ModalVendas";
 import { useUser } from "@/src/contexts/userContext";
-import { addBico } from "@/src/db/useDbBico";
-import { addBomba } from "@/src/db/useDbBomba";
-import { addTurno } from "@/src/db/useDbTurno";
-import { Bico, Bomba, Turno, User, } from "@/src/types/Types";
-import { Redirect, router } from "expo-router";
+import { Bomba,Turno, } from "@/src/types/Types";
 import React, { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet,} from "react-native";
-
-
-async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
-  console.log('feito1')
-  if(user){
-    console.log('feito')
-  if(bombas){
-    try {
-      const ids = await Promise.all( 
-        bombas.map(async (bomba)=>{
-        const idBico1 = await addBico({n:bomba.gasoleo.n,abertura:bomba.gasoleo.abertura,fecho:bomba.gasoleo.fecho})
-        const idBico2 = await addBico({n:bomba.gasolina1.n,abertura:bomba.gasolina1.abertura,fecho:bomba.gasolina1.fecho})
-        const idBico3 = await addBico({n:bomba.gasolina2.n,abertura:bomba.gasolina2.abertura,fecho:bomba.gasolina2.fecho})
-        const idbomba = await addBomba({n:bomba.n,gasoleo:idBico1,gasolina1:idBico2,gasolina2:idBico3,id:0})
-
-        return idbomba;
-      })
-    )  
-    const idTurno = await addTurno({
-      bombas:ids.toString(),
-      usuario:turno.usuario,
-      multicaixa:turno.multicaixa,
-      codigoQR:turno.codigoQR,
-      frota:turno.frota,
-      totalSagriasPeriodica:turno.totalSagriasPeriodica,
-      totalSagrias:turno.totalSagrias,
-      data:turno.data})
-      console.log(idTurno)
-    } catch (error) {
-        console.log("ocorreu um erro",error)
-    }
-    
-  }
-  }else{
-    console.log('feit3')
-    return (router.replace("/autenticacao/login"))
-  }
- 
-}
-function calcularValorEsperado(bombas:Bomba[]){
-  let  result=0
-  bombas.forEach((b,index) => {
-    const bico1=(Number(b.gasoleo.fecho) - Number(b.gasoleo.abertura));
-    const bico2=(Number(b.gasolina1.fecho) -  Number(b.gasolina1.abertura));
-    const bico3= (Number(b.gasolina2.fecho) -  Number(b.gasolina2.abertura));
-    const v1 = bico1*400;
-    const v2 = bico2*300;
-    const v3 = bico3*300;
-    const r = v1+v2+v3; 
-    result= r+result
-  });
-  return result;
-}
-function calcularValorApresentar(turno:Turno){
-  return(
-    Number(turno.multicaixa)+
-    Number(turno.codigoQR)+
-    Number(turno.frota)+
-    Number(turno.totalSagriasPeriodica)
-  )
-}
-
-  const calcularValoresDoTurno = (bombas:Bomba[],usuario:number, multicaixa:number, codigoQR:number, frota:number, totalSagriasPeriodica:number) => {
-      const turno = {
-      bombas: bombas, 
-      usuario:usuario,
-      multicaixa: multicaixa,
-      codigoQR: codigoQR,
-      frota: frota,
-      totalSagriasPeriodica: totalSagriasPeriodica,
-      totalSagrias: 0, // This can be calculated later
-      data: new Date().toISOString(),
-    };
-    return turno;
-  }
-
-  function save(bico1:Bico ,bico2:Bico ,bico3:Bico ,nBomba1:number){
-    
-    if(bico1 && bico2 && bico3 && nBomba1){  
-    const bomba:Bomba={
-      n: nBomba1,
-      gasoleo: {n:bico1.n,abertura:Number(bico1.abertura),fecho:Number(bico1.fecho)},
-      gasolina1: {n:bico2.n,abertura:Number(bico2.abertura),fecho:Number(bico2.fecho)},
-      gasolina2: {n:bico3.n,abertura:Number(bico3.abertura),fecho:Number(bico3.fecho)}      
-    };
-    return bomba;
-    
-  }else{
-    Alert.alert("Erro ao salvar os dados da bomba. Verifique se todos os campos estão preenchidos corretamente.");
-    return void 0;
-  }
-   }
+import {ScrollView, StyleSheet,} from "react-native";
+import { calcularValorApresentar, calcularValoresDoTurno, calcularValorEsperado, hendleSave, save } from "@/src/logics/calculos";
 
 
 export default function Home() {
@@ -131,10 +36,11 @@ export default function Home() {
   const [visible, setVisible] = useState(false);
   const [visibleSave, setVisibleSave] = useState(false);
   const [bombas,setBombas] =useState<Bomba[]>([]);
+  const [turnoStorge, setTurnoStorge] = useState<Turno|null>(null);
   const [turno, setTurno] = useState<Turno|null>(null);
   const [totalEsperado, setTotalEsperado] = useState<number>(0);
   const [totalApresentado,setTotalApresentado] = useState(0);
-
+  const dataTurno = new Date().toISOString()
   const {user} = useUser()
 
 //cacula o valor esperodo para o turno
@@ -234,17 +140,15 @@ useEffect(()=>{
       setTotalSagrias={setTotalSagrias} 
       valordoEsperado={bombas ? totalEsperado : 0}
       valordoApresentado={turno?totalApresentado:0}
-      calc={()=>{setTurno(calcularValoresDoTurno(bombas,
-        multicaixa,
-        user?user.id:0,
-        codigoQR,
-        frota,
-        totalSagriasPeriodica))
+      calc={()=>{
+        const turno:Turno = {id:0,bombas:bombas,multicaixa:multicaixa,codigoQR:codigoQR,frota:frota,totalSagriasPeriodica:totalSagriasPeriodica,totalSagrias:totalSagrias,usuario:user?user.id:0,data:dataTurno}
+        setTurno(calcularValoresDoTurno(turno))
+        setTurnoStorge(turno)
         setVisibleSave(true)
       }}
       visibleSave={visibleSave}
       save={()=>{
-        if(turno)hendleSave(bombas,turno, user)}}
+        if(turnoStorge)hendleSave(bombas,turnoStorge, user)}}
       />
     
     </ScrollView>
