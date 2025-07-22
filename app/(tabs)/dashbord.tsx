@@ -2,9 +2,10 @@ import { Colors } from "@/src/color/Colors";
 import Card from "@/src/components/Card";
 import Item from "@/src/components/Item";
 import Search from "@/src/components/Search";
-import { getAllBico } from "@/src/db/useDbBico";
-import { getAllBombas } from "@/src/db/useDbBomba";
-import { getAllTurnos } from "@/src/db/useDbTurno";
+import { getAllBico, getBicoByID } from "@/src/db/useDbBico";
+import { getAllBombas, getBombasByID } from "@/src/db/useDbBomba";
+import { getAllTurnos, getTurnoById } from "@/src/db/useDbTurno";
+import { sammaryTurno } from "@/src/logics/calculos";
 import { Turno } from "@/src/types/Types";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
@@ -19,26 +20,23 @@ export default function Dashbord() {
     return list;
   }
     const getbombas = async()=>{
-    const listBombas = await getAllBombas();
+    const listBombas = await getBombasByID(15);
     return listBombas;
   }
      const getbicos = async()=>{
-    const listBombas = await getAllBico();
-    return listBombas;
+    const listbicos = await getBicoByID(41);
+    return listbicos;
   }
   useEffect( ()=>{
     (async ()=>{
+      const bombas = await getbombas()
       const bicos = await getbicos()
       const lista = await getlist()
-      const bom = await getbombas()
-  
-      
       setDados(lista)
-      console.log('======================================')
-      console.log('bicos',bicos)
-      console.log('Bomba',bom)
-      console.log('Turno',dados)
-      console.log('======================================')
+      console.log("-----------------------------------------------------------------")
+      console.log(bicos)
+      console.log(bombas)
+      console.log("-----------------------------------------------------------------")
     })();
       
   },[]);
@@ -53,7 +51,7 @@ export default function Dashbord() {
       <Search valuer={search} setValuer={setSearch} placeholder="Search"/>
       <FlatList
         data={dados}
-        renderItem={(item)=>(<Item data="domingo 12/07/2025" text="29300Kz" onPress={()=>{}} />)}
+        renderItem={(item)=>(<Item data={item.item.data} text="29300Kz" onPress={()=>{sammaryTurno(item.item.id)}} />)}
         
       />
     </View>

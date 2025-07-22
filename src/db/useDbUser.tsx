@@ -64,15 +64,21 @@ import { getDb } from "./dbInit";
         return null
         
     }
-  /*  {
-            id:item.id,
-            nome:item.nome,
-            email:item.email,
-            senha:item.senha,
-            foto:item.foto,
-            posto:item.posto}*/
-       
-     
+}
+export async function getUserById(id:number):Promise<User|null>{ 
+    //db recebe a conexao
+    const db =  await getDb()
+    try {
+        // retorna o usuario com id.
+        const user:User|null = await db.getFirstAsync('SELECT * FROM usuario WHERE id = ?',id);
+        if(user){
+        return user;
+        }else{return null}
+    } catch (error) {
+        console.error("Erro ao buscar dos usuários:", error);
+        return null
+        
+    }
  }
 
  

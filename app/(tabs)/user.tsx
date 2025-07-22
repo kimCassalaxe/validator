@@ -14,7 +14,7 @@ export default function User() {
 
   function hadleLogout(){
     setUser(null); //remove o usuario logado 
-    routes.push("/home")//redireciona para tela  home
+    routes.back()//redireciona para tela  home
   }
   useEffect(()=>{
    

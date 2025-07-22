@@ -44,5 +44,20 @@ export async function getAllBico():Promise<Bico[]|null>{
         
     }     
 }
+export async function getBicoByID(id:number):Promise<Bico|null>{ 
+    //db recebe a conexao
+    const db =  await getDb()
+    try {
+        // retorna o primeiro elemento com este id
+        const bico:Bico|null = await db.getFirstAsync('SELECT * FROM bico WHERE id = ?',id);
+        if(bico){
+        return bico
+        }else{return null}
+    } catch (error) {
+        console.error("Erro ao buscar dos Bombas:", error);
+        return null
+        
+    }     
+}
 
  

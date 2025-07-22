@@ -39,13 +39,13 @@ import { getDb } from "./dbInit";
      await db.runAsync('DELETE FROM turno WHERE id = ?',id); // Binding named parameters from object
  }
 
- export async function getAllTurnos():Promise<Turno[]|null>{ 
+ export async function getAllTurnos():Promise<TurnoStorge[]|null>{ 
     //db recebe a conexao
     const db =  await getDb()
     try {
         // getAllAsync() retorna um array de turnos.
-        const allRows:Turno[]|null = await db.getAllAsync('SELECT * FROM turno');
-        let turnos:Turno[] =[]
+        const allRows:TurnoStorge[]|null = await db.getAllAsync('SELECT * FROM turno');
+        let turnos:TurnoStorge[] =[]
         if(allRows){
         return turnos = allRows.map((item)=>(item));
         }else{return []}
@@ -56,6 +56,20 @@ import { getDb } from "./dbInit";
     }     
 }
 
- 
+  export async function getTurnoById(id:number):Promise<TurnoStorge|null>{ 
+    //db recebe a conexao
+    const db =  await getDb()
+    try {
+        // getAllAsync() retorna um array de turnos.
+        const turno:TurnoStorge|null = await db.getFirstAsync('SELECT * FROM turno WHERE id= ?',id);
+        if(turno){
+        return turno
+        }else{return null}
+    } catch (error) {
+        console.error("Erro ao buscar dos Turnos:", error);
+        return null
+        
+    }     
+}
 
 

@@ -1,18 +1,13 @@
 import { router } from "expo-router"
-import { addBico } from "../db/useDbBico"
-import { addBomba } from "../db/useDbBomba"
-import { addTurno } from "../db/useDbTurno"
-import { Bico, Bomba, BombaDB, Turno, TurnoStorge, User } from "../types/Types"
+import { addBico, getBicoByID } from "../db/useDbBico"
+import { addBomba, getBombasByID } from "../db/useDbBomba"
+import { addTurno, getAllTurnos, getTurnoById } from "../db/useDbTurno"
+import { Bico, Bomba, BombaDB, Bombas, Turno, TurnoStorge, User } from "../types/Types"
 import { Alert } from "react-native"
+import { getUserById } from "../db/useDbUser"
 
 //funcao que preciste os dados do turno no banco
 export async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
-
-  console.log('_________________________________________________________')
-  console.log('usuario=>',user)
-  console.log('bomba=>',bombas)
-  console.log('turno=>',turno.bombas)
-  console.log('_________________________________________________________')
   if(user){
   if(bombas){
     try {
@@ -29,7 +24,7 @@ export async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
         console.log('id bomba ',idbomba)
         return idbomba;
       }))
-      console.log('ids=====',ids)
+      console.log('ids=====',ids.toString())
       const turnoStorge:TurnoStorge = {
         id:turno.id,
         bombas:ids.toString(), 
@@ -111,4 +106,42 @@ export function save(bico1:Bico ,bico2:Bico ,bico3:Bico ,nBomba1:number){
     return void 0;
   }
    }
+export async function sammaryTurno(id:number){
+  let dados = {user:{},bombas:{},vendas:{}}
+  const resultTorno = await getTurnoById(id);
+  if(resultTorno){
+    const user =await getUserById(Number(resultTorno.usuario))
+      if(user)dados.user = user;
+    dados.vendas ={
+      multicaixa: resultTorno.multicaixa,
+      codigoQR: resultTorno.codigoQR,
+      frota: resultTorno.frota,
+      totalSagriasPeriodica: resultTorno.totalSagriasPeriodica,
+      totalSagrias: resultTorno.totalSagrias,
+      data: resultTorno.data}
+    const ids = resultTorno.bombas.split(',')
+    const bombas = await Promise.all(ids.map(async (id)=>{
+    const bomba =  await getBombasByID(Number(id))
+      if(bomba)return bomba;
+    }));
+ 
+    if(bombas){
+      const bicos =await Promise.all(
+        bombas.map(
+          async (value)=>{
+            return { 
+              numero: value?.n,
+              GO: await getBicoByID(Number(value?.gasoleo)), 
+              GA1: await getBicoByID(Number(value?.gasolina1)), 
+              GA2:await getBicoByID(Number(value?.gasolina2))}
+      }))
+        //const bico = getBicoByID(Number(value?.gasoleo)) 
+        dados.bombas = bicos
+       console.log("====================================")
+      console.log(dados)
+        console.log("====================================")
 
+    }    
+  }
+
+}

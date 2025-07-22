@@ -148,7 +148,9 @@ useEffect(()=>{
       }}
       visibleSave={visibleSave}
       save={()=>{
-        if(turnoStorge)hendleSave(bombas,turnoStorge, user)}}
+        console.log("====================================1")
+        if(turnoStorge)hendleSave(bombas,turnoStorge, user)}
+      }
       />
     
     </ScrollView>

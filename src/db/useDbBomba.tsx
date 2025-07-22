@@ -46,5 +46,17 @@ import { getDb } from "./dbInit";
         
     }     
 }
+export async function getBombasByID(id:number):Promise<Bombas|null>{ 
+    //db recebe a conexao
+    const db =  await getDb()
+    try {
+        const bomba:Bombas|null = await db.getFirstAsync('SELECT * FROM bombas WHERE id=?',id);
+        return bomba
+    } catch (error) {
+        console.error(`error ao buscar a bomba com id = ${id}`);
+        return null
+        
+    }     
+}
 
  
