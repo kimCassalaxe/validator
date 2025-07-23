@@ -1,11 +1,7 @@
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Colors } from "@/src/color/Colors";
-import BombaNumbre from "./BombaNumbre";
-import InputsBoco from "./InputsBico";
-import { MaterialIcons } from "@expo/vector-icons";
-import InputsValuers from "./InputsValuers";
-import { Bomba } from "../types/Types";
+import { Tema } from "@/src/tema/Colors";
+import { StyleSheet, Text, View } from "react-native";
 import Btn from "./Btn";
+import InputsValuers from "./InputsValuers";
 
 interface props {
   multicaixa:  number;
@@ -17,6 +13,7 @@ interface props {
   totalSagriasPeriodica: number;
   setTotalSagriasPeriodica: any;
   totalSagrias:number,
+  plasResto?:string,
   setTotalSagrias: any;
   valordoEsperado?:number;
   valordoApresentado?:number;
@@ -29,7 +26,7 @@ interface props {
 export default function Index(pro: props) {
   if (pro.visibleModel === false) return null;
 
-const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
+const valid = Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
   return (
     <View style={styles.modal}>
         <Text style={styles.titles}>Valores de Vendas</Text>
@@ -38,7 +35,7 @@ const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
         <InputsValuers text="Vendas pelo Frota +" placeholder="Frota +" value={pro.frota.toString()} onChangeText={pro.setFrota} keyboardType="numeric" />
         <InputsValuers text="Total das Sagrias periodicas" placeholder="Total das Sagrias periodicas" value={pro.totalSagriasPeriodica.toString()} onChangeText={pro.setTotalSagriasPeriodica} keyboardType="numeric" />
         <Btn icon="autorenew" text="Calcular Sangria Final" onPress={pro.calc}/>
-        <InputsValuers text="Total das Sagrias" placeholder={valid.toString()} value={pro.totalSagrias.toString()} onChangeText={pro.setTotalSagrias} keyboardType="numeric" />
+        <InputsValuers text="Ultima Sagrias" placeholder={valid.toString()} value={pro.totalSagrias.toString()} onChangeText={pro.setTotalSagrias} keyboardType="numeric" />
       
       <View>
         <Text style={styles.text}>Valor do Esperado: { pro.valordoEsperado?pro.valordoEsperado:0}</Text>
@@ -55,38 +52,38 @@ const valid =Number(pro.valordoApresentado)- Number(pro.valordoEsperado);
 }
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: Colors.card,
+    backgroundColor: Tema.colors.input,
     padding: 20,
     borderRadius: 10,
     marginVertical: 10,
     rowGap:20,
     marginBottom:100,
   },titles:{
-    fontSize:Colors.text.title.size,
+    fontSize:Tema.sizes.h1,
     fontWeight:"bold",
     marginBottom: 10,
-    color: Colors.text.color,
+    color: Tema.colors.text
   },btn: {
     width:"100%",
-    backgroundColor: Colors.success,
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: Tema.colors.success,
+    padding: Tema.sizes.padd,
+    borderRadius: Tema.sizes.radus,
     flexDirection: "row",
     justifyContent: "center",
-    gap: 10,
+    gap: Tema.sizes.gap,
     alignItems: "center",
     marginVertical: 0,
   },
     text: {
-        color: Colors.text.color,
-        fontSize: 16, 
+        color: Tema.colors.text,
+        fontSize: Tema.sizes.p, 
         fontWeight:"bold", 
     },textValido: {
-        color: Colors.success,
-        fontSize: 16,  
+        color: Tema.colors.success,
+        fontSize: Tema.sizes.p,  
     },
     textNValido: {
-        color: Colors.erro,
-        fontSize: 16,  
+        color:Tema.colors.erro,
+        fontSize: Tema.sizes.p,  
     },
 });

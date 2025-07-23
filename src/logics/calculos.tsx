@@ -11,6 +11,7 @@ export async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
   if(user){
   if(bombas){
     try {
+            console.log('dento')
       const ids = await Promise.all(bombas.map(async (bomba)=>{
         const bico1:Bico = {n:bomba.gasoleo.n,abertura:bomba.gasoleo.abertura,fecho:bomba.gasoleo.fecho};
         const bico2:Bico = {n:bomba.gasolina1.n,abertura:bomba.gasolina1.abertura,fecho:bomba.gasolina1.fecho};
@@ -18,13 +19,10 @@ export async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
         const idBico1 = await addBico(bico1)
         const idBico2 = await addBico(bico2)
         const idBico3 = await addBico(bico3)
-        console.log(`dados dos Bocos => ${idBico1}, ${idBico2}, ${idBico3} `)
         const bombaStorge:BombaDB = {n:bomba.n,gasoleo:idBico1,gasolina1:idBico2,gasolina2:idBico3}
         const idbomba = await addBomba(bombaStorge)
-        console.log('id bomba ',idbomba)
         return idbomba;
       }))
-      console.log('ids=====',ids.toString())
       const turnoStorge:TurnoStorge = {
         id:turno.id,
         bombas:ids.toString(), 
@@ -44,8 +42,7 @@ export async function hendleSave(bombas:Bomba[],turno:Turno,user:User|null){
     
   }
   }else{
-    console.log('feit3')
-    return (router.replace("/autenticacao/login"))
+    return (router.push("/autenticacao/login"))
   }
  
 }
@@ -84,7 +81,7 @@ export const calcularValoresDoTurno = (turno:Turno) => {
       codigoQR: turno.codigoQR,
       frota: turno.frota,
       totalSagriasPeriodica: turno.totalSagriasPeriodica,
-      totalSagrias: 0, // This can be calculated later
+      totalSagrias: turno.totalSagrias, // This can be calculated later
       data:turno.data,
     };
     return novoTurno;

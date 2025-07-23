@@ -1,7 +1,6 @@
+import { Tema } from "@/src/tema/Colors";
+import { Stack, useRouter } from "expo-router";
 import React from "react";
-import {  Stack, Tabs, useRouter } from "expo-router";
-import { Colors } from "@/src/color/Colors";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function layout() {
   const router = useRouter() 
@@ -9,8 +8,8 @@ export default function layout() {
     <Stack
     screenOptions={
           {
-            headerStyle:{backgroundColor:Colors.background,},
-            headerTitleStyle: { color: Colors.text.color },
+            headerStyle:{backgroundColor:Tema.colors.b,},
+            headerTitleStyle: { color: Tema.colors.text},
             headerTitleAlign:"center",
             headerBackButtonMenuEnabled:true,
             

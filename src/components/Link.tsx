@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Colors } from "../color/Colors";
 import { Link } from "expo-router";
+import { StyleSheet, Text } from "react-native";
+import { Tema } from "../tema/Colors";
 
 type prop = {
     text: string, 
@@ -18,6 +18,6 @@ export default function Index(props: prop) {
 }
 const styles = StyleSheet.create({
   textLink:{
-      color:Colors.plasholdr,
+      color: Tema.colors.link,
     }
 });

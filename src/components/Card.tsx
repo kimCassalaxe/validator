@@ -1,6 +1,5 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Colors } from "../color/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
+import {Tema} from "../tema/Colors";
 
 type prop = {
     text: string, 
@@ -18,18 +17,18 @@ export default function Index(props: prop) {
 const styles = StyleSheet.create({
   container:{
     width:'45%',
-    backgroundColor:Colors.card,
+    backgroundColor:Tema.colors.s,
     padding: 10,
-    borderRadius: 15,
+    borderRadius: Tema.sizes.radus,
     gap: 10,
   },
   btnText: {
-    color: Colors.text.color,
+    color: Tema.colors.text,
     fontWeight: "bold",
-    fontSize:30,
+    fontSize:Tema.sizes.h1,
   },
   titleCard: {
-    color: Colors.plasholdr,
-    fontSize: 16,
+    color: Tema.colors.h1,
+    fontSize: Tema.sizes.p,
   }
 });

@@ -1,17 +1,23 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Colors } from "../color/Colors";
+import { Modal, StyleSheet, Text, TextInput, View } from "react-native";
+import {Tema} from "../tema/Colors";
+import Btn from "./Btn";
+import { useState } from "react";
 
 type prop = {
     value: string, 
     onChangeText: (text: string) => void
 }
 export default function Index(props: prop) {
+  const [modalVisible,setModalVisible] = useState(false)
     return(
-        <View style={styles.container}>
+
+  <View style={styles.container}>
             <Text style={styles.title}>Numero da Bomba</Text>
             <TextInput  style={styles.element} placeholder='XX' value={props.value} onChangeText={props.onChangeText} keyboardType='numeric' /> 
         </View>
     );
+
+        
 }
 const styles = StyleSheet.create({
   container: {
@@ -24,17 +30,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {    
-    fontSize: Colors.text.title.size,
+    fontSize: Tema.sizes.subTitle,
       fontWeight: "bold",
       marginBottom: 10,
-      color: Colors.text.color,
+      color: Tema.colors.text,
     },
   element: {
+    borderRadius:Tema.sizes.radus,
+    borderColor:Tema.colors.border,
+    borderWidth:Tema.sizes.border,
+    borderStyle:"solid",
     width: "25%",
-    borderRadius:15,
     padding:10,
-    fontWeight:'bold',
-    backgroundColor:Colors.input,
-    color: Colors.text.color,
+    backgroundColor:Tema.colors.input,
+    color: Tema.colors.text,
   },
 });

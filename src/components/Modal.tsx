@@ -1,9 +1,8 @@
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Colors } from "@/src/color/Colors";
+import { Tema } from "@/src/tema/Colors";
+import { StyleSheet, View } from "react-native";
 import BombaNumbre from "./BombaNumbre";
-import InputsBoco from "./InputsBico";
-import { MaterialIcons } from "@expo/vector-icons";
 import Btn from "./Btn";
+import InputsBoco from "./InputsBico";
 
 interface props {
   nBomba: number;
@@ -53,17 +52,16 @@ export default function Index(pro: props) {
         fecho={pro.fecho3}
         setFecho={pro.setFecho3}
       />      
-      <Btn icon={"arrow-forward"} text="Savançar" onPress={pro.save}></Btn>
+      <Btn icon={"arrow-forward"} text="Avançar" onPress={pro.save}/>
     </View>
   );
 }
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: Colors.card,
-    padding: 20,
+    padding: Tema.sizes.padd,
     borderRadius: 10,
     marginVertical: 10,
-    rowGap:20
+    rowGap:Tema.sizes.gap
   },
 
 });

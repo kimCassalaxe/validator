@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Colors } from "../color/Colors";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Tema } from "../tema/Colors";
  
 type prop = {
     text: string,
@@ -12,7 +12,7 @@ export default function Index(props: prop) {
     return(
         <>
         <TouchableOpacity style={styles.btn} onPress={props.onPress}>
-            <AntDesign style={styles.icon} name="check" size={24}color={Colors.text.color} />
+            <AntDesign style={styles.icon} name="check" size={24}color={Tema.colors.text} />
             <View>
             <Text style={styles.btnText}>{props.text}</Text>
             <Text style={styles.data}>{props.data}</Text>
@@ -31,17 +31,16 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   btnText: {
-    color: Colors.text.color,
-    fontSize: 16,
+    color: Tema.colors.text,
+    fontSize: Tema.sizes.p,
     fontWeight: "bold",
   },
   data:{
-    color: Colors.plasholdr,
+    color: Tema.colors.border,
     fontSize: 12,
   }
   ,icon:{
-    backgroundColor:Colors.card,
-    padding: 10,
-    borderRadius: 50,
+    backgroundColor:Tema.colors.input,
+    padding: 10  
   },
 });

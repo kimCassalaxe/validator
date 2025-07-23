@@ -1,6 +1,5 @@
-import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Colors } from "../color/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Modal, StyleSheet, Text, View } from "react-native";
+import { Tema } from "../tema/Colors";
 import Btn from "./Btn";
 
 type prop = {
@@ -15,7 +14,7 @@ export default function Index(props: prop) {
     return(
         <>
         <Modal transparent visible={props.visible}>
-        <View style={{ flex:1, justifyContent:'center', alignItems:'center', backgroundColor:Colors.card }}>
+        <View style={{ flex:1, justifyContent:'center', alignItems:'center', backgroundColor:Tema.colors.success }}>
           <View style={{ backgroundColor:'#fff', padding:20, borderRadius:10, width:250 }}>
             <Text>{props.title}</Text>
             <Text>{props.text}</Text>
@@ -34,18 +33,18 @@ const styles = StyleSheet.create({
 
   btn: {
     width:"100%",
-    backgroundColor: Colors.btn,
+    backgroundColor: Tema.colors.btn,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: Tema.sizes.radus,
     flexDirection: "row",
     justifyContent: "center",
-    gap: 10,
+    gap: Tema.sizes.gap,
     alignItems: "center",
     marginVertical: 0,
   },
   btnText: {
-    color: Colors.text.color,
-    fontSize: 16,
+    color: Tema.colors.text,
+    fontSize: Tema.sizes.p,
     fontWeight: "bold",
   },
 });

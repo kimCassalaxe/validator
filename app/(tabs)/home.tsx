@@ -1,12 +1,13 @@
-import { Colors } from "@/src/color/Colors";
 import Btn from "@/src/components/Btn";
 import Modal from "@/src/components/Modal";
 import ModalVendas from "@/src/components/ModalVendas";
 import { useUser } from "@/src/contexts/userContext";
-import { Bomba,Turno, } from "@/src/types/Types";
-import React, { useEffect, useState } from "react";
-import {ScrollView, StyleSheet,} from "react-native";
 import { calcularValorApresentar, calcularValoresDoTurno, calcularValorEsperado, hendleSave, save } from "@/src/logics/calculos";
+import { base } from "@/src/styles/Base";
+import { Tema} from "@/src/tema/Colors";
+import { Bomba, Turno, } from "@/src/types/Types";
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, } from "react-native";
 
 
 export default function Home() {
@@ -40,7 +41,7 @@ export default function Home() {
   const [turno, setTurno] = useState<Turno|null>(null);
   const [totalEsperado, setTotalEsperado] = useState<number>(0);
   const [totalApresentado,setTotalApresentado] = useState(0);
-  const dataTurno = new Date().toISOString()
+  const dataTurno = new Date().toLocaleString('pt-PT');
   const {user} = useUser()
 
 //cacula o valor esperodo para o turno
@@ -48,10 +49,13 @@ export default function Home() {
 useEffect(()=>{
   setTotalEsperado(calcularValorEsperado(bombas));
   if(turno)setTotalApresentado(calcularValorApresentar(turno))
-}, [bombas,turno])
+}, [bombas,turno,totalSagrias])
+useEffect(()=>{
+  if(turno)setTotalApresentado(calcularValorApresentar(turno))
+}, [totalSagrias])
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={base.container}>
      
       <Modal
         visible={true}
@@ -147,10 +151,7 @@ useEffect(()=>{
         setVisibleSave(true)
       }}
       visibleSave={visibleSave}
-      save={()=>{
-        console.log("====================================1")
-        if(turnoStorge)hendleSave(bombas,turnoStorge, user)}
-      }
+      save={()=>{if(turnoStorge)hendleSave(bombas,turnoStorge, user)}}
       />
     
     </ScrollView>
@@ -161,13 +162,13 @@ useEffect(()=>{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.background,
+    backgroundColor: Tema.colors.b,
     paddingTop: 50,
     padding: 5,
     paddingBottom: 100,
   },  
   btn:{
-    backgroundColor: Colors.primary,
+    backgroundColor: Tema.colors.btn,
     padding: 10,
     borderRadius: 5,
     flexDirection: "row",
@@ -178,9 +179,9 @@ const styles = StyleSheet.create({
 
   },
   btnErrer:{
-    backgroundColor: Colors.erro,
+    backgroundColor: Tema.colors.erro,
     padding: 10,
-    borderRadius: 5,
+    borderRadius:Tema.sizes.radus,
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,
@@ -188,8 +189,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   btnText:{
-    color: Colors.text.color,
-    fontSize: 16,
+    color: Tema.colors.text,
+    fontSize: Tema.sizes.btnText,
     fontWeight: "bold",
   },
 });

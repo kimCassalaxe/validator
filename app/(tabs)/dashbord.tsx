@@ -1,11 +1,11 @@
-import { Colors } from "@/src/color/Colors";
 import Card from "@/src/components/Card";
 import Item from "@/src/components/Item";
 import Search from "@/src/components/Search";
-import { getAllBico, getBicoByID } from "@/src/db/useDbBico";
-import { getAllBombas, getBombasByID } from "@/src/db/useDbBomba";
-import { getAllTurnos, getTurnoById } from "@/src/db/useDbTurno";
+import { getBicoByID } from "@/src/db/useDbBico";
+import { getBombasByID } from "@/src/db/useDbBomba";
+import { getAllTurnos } from "@/src/db/useDbTurno";
 import { sammaryTurno } from "@/src/logics/calculos";
+import { Tema } from "@/src/tema/Colors";
 import { Turno } from "@/src/types/Types";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
@@ -33,10 +33,6 @@ export default function Dashbord() {
       const bicos = await getbicos()
       const lista = await getlist()
       setDados(lista)
-      console.log("-----------------------------------------------------------------")
-      console.log(bicos)
-      console.log(bombas)
-      console.log("-----------------------------------------------------------------")
     })();
       
   },[]);
@@ -59,14 +55,14 @@ export default function Dashbord() {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:Colors.background,
+    backgroundColor:Tema.colors.b,
     height:"100%",
     padding: 5,
   },titles:{
-    fontSize:Colors.text.title.size,
+    fontSize:Tema.sizes.h1,
     fontWeight:"bold",
     marginBottom: 10,
-    color: Colors.text.color,
+    color: Tema.colors.text,
   },cardBox:{
     flexDirection:"row",
     gap:20,

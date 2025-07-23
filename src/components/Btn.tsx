@@ -1,6 +1,7 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Colors } from "../color/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Text, TouchableOpacity } from "react-native";
+import { stylesBtn } from "../styles/Btn";
+import { Tema} from "../tema/Colors";
 
 type prop = {
     text: string, 
@@ -12,29 +13,10 @@ type prop = {
 export default function Index(props: prop) {
     return(
         <>
-        <TouchableOpacity style={!props.styleBtn?styles.btn:props.styleBtn} onPress={props.onPress}>
-            <Text style={!props.styleText?styles.btnText:props.styleText}>{props.text}</Text>
-            <MaterialIcons name={props.icon} size={24} color={Colors.text.color} />
+        <TouchableOpacity style={[stylesBtn.btn,props.styleBtn]} onPress={props.onPress}>
+            <Text style={[stylesBtn.btnText,props.styleText]}>{props.text}</Text>
+            <MaterialIcons name={props.icon} size={24} color={Tema.colors.btnText} />
         </TouchableOpacity>
         </>
     );
 }
-const styles = StyleSheet.create({
-
-  btn: {
-    width:"100%",
-    backgroundColor: Colors.btn,
-    padding: 10,
-    borderRadius: 5,
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 10,
-    alignItems: "center",
-    marginVertical: 0,
-  },
-  btnText: {
-    color: Colors.text.color,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});

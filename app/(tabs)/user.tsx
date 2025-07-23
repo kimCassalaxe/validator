@@ -1,9 +1,8 @@
-import { Colors } from "@/src/color/Colors";
-import Alert from "@/src/components/Alert";
 import Btn from "@/src/components/Btn";
 import { useUser } from "@/src/contexts/userContext";
+import {Tema } from "@/src/tema/Colors";
 import { Redirect, useRouter } from "expo-router";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 
@@ -31,7 +30,7 @@ export default function User() {
           source={user.foto? require('@/assets/images/f1.jpg'):require('@/assets/images/f1.jpg')}
           style={styles.f} 
         />
-        <Btn styleText={styles.btnText} styleBtn={styles.btnEdit} icon={'calendar-month'} onPress={()=>{}} text="editar"/>
+        <Btn styleText={styles.btnText} styleBtn={styles.btnEdit} onPress={()=>{}} text="editar"/>
       </View>
       <Text style={styles.text}>{user.nome}</Text>
       <Text style={styles.text}>Numero Mecanografico: <Text style={styles.textValuer}>{user.mecanografico?user.mecanografico:"#####"}</Text></Text>
@@ -54,29 +53,26 @@ export default function User() {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:Colors.background,
+    backgroundColor:Tema.colors.b,
     flex:1,
     rowGap:20,
     padding: 5,
-    paddingBottom: 100,
   },perfil:{
-    backgroundColor:Colors.card,
+    backgroundColor:Tema.colors.input,
     padding: 10,
     borderRadius: 15,
     justifyContent:'center',
     alignItems:'center',
-
-    marginVertical:20,
+    marginVertical:10,
   },textValuer:{
-    color:Colors.plasholdr
+    color:Tema.colors.border
   },modure:{
-    backgroundColor:"#ccc",
     justifyContent:'center',
     alignItems:'center',
     borderRadius:"100%",
     borderStyle:'solid',
-    borderColor:Colors.plasholdr,
-    borderWidth:5,
+    borderColor:Tema.colors.border,
+    borderWidth:Tema.sizes.border,
     width:150,
     height:150,
     marginVertical:20,
@@ -89,33 +85,38 @@ const styles = StyleSheet.create({
     height:"100%",
     marginVertical:20,
   },text:{
-    color:Colors.text.color
+    color:Tema.colors.text
   },btnSession:{
+    fontSize:Tema.sizes.btnText,
     width:"100%",
-    backgroundColor:Colors.erro,
-    flexDirection:'row',
+    backgroundColor:Tema.colors.erro,
     padding:10,
+    flexDirection:'row',
     justifyContent:'center',
     alignItems:'center',
     borderRadius:10,
     gap:20,
-    position:"absolute",
-    bottom:20,
-    left:5,
+    position:"relative",
+    bottom:-90,
+    left:0,
   },btn:{
-    flexDirection:'row',
-
+    flexDirection:'row-reverse',
+    backgroundColor:Tema.colors.input,
+    justifyContent:"flex-end",
     alignItems:'center',
     borderRadius:10,
-    gap:20
+    gap:10
     
   },btnText:{
-    color:Colors.text.color
+    color:Tema.colors.text,
+    fontSize:11,
   },btnEdit:{
+    width:'45%',
     flexDirection:'row',
-     alignItems:'center',
-    backgroundColor:Colors.plasholdr,
-    padding:2,
+    alignItems:'center',
+    justifyContent:"center",
+    backgroundColor:Tema.colors.border,
+    padding:0,
     gap:5,
     borderRadius:20,
     opacity:.5,
