@@ -1,4 +1,6 @@
 import Btn from "@/src/components/Btn";
+import ResultBox from "@/src/components/ResultBox";
+import TBody from "@/src/components/TBody";
 import { initDb, limparTabela } from "@/src/db/dbInit";
 import { getAllUsers } from "@/src/db/useDbUser";
 import {Tema } from "@/src/tema/Colors";
@@ -36,11 +38,10 @@ useEffect(() => {
       <Btn text="Criar um perfil" icon={"person"} onPress={()=>(router.push("/autenticacao/login"))}/>
       </View>
     </View>
-
-      // />
   );
 
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor:Tema.colors.b,

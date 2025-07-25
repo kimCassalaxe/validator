@@ -35,7 +35,7 @@ export default function Dashbord() {
       setDados(lista)
     })();
       
-  },[]);
+  },[dados]);
   return (
     <View style={styles.container}>
       <Text style={styles.titles}>Vendas do Ultimo Turno</Text>

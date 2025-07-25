@@ -1,5 +1,6 @@
 import Btn from "@/src/components/Btn";
-import Modal from "@/src/components/Modal";
+import ModalBicos from "@/src/components/ModalBicos";
+import ModalResult from "@/src/components/ModalResult";
 import ModalVendas from "@/src/components/ModalVendas";
 import { useUser } from "@/src/contexts/userContext";
 import { calcularValorApresentar, calcularValoresDoTurno, calcularValorEsperado, hendleSave, save } from "@/src/logics/calculos";
@@ -33,7 +34,7 @@ export default function Home() {
   const [totalSagrias, setTotalSagrias] = useState(0);
   const [totalSagriasPeriodica, setTotalSagriasPeriodica] = useState(0);
   
- 
+  const [visibleResult, setVisibleResult] = useState(false);
   const [visible, setVisible] = useState(false);
   const [visibleSave, setVisibleSave] = useState(false);
   const [bombas,setBombas] =useState<Bomba[]>([]);
@@ -42,6 +43,7 @@ export default function Home() {
   const [totalEsperado, setTotalEsperado] = useState<number>(0);
   const [totalApresentado,setTotalApresentado] = useState(0);
   const dataTurno = new Date().toLocaleString('pt-PT');
+  const [visibleModalVendas, setVisibleModalVendas] = useState(false);
   const {user} = useUser()
 
 //cacula o valor esperodo para o turno
@@ -49,15 +51,16 @@ export default function Home() {
 useEffect(()=>{
   setTotalEsperado(calcularValorEsperado(bombas));
   if(turno)setTotalApresentado(calcularValorApresentar(turno))
-}, [bombas,turno,totalSagrias])
+}, [bombas,turno])
 useEffect(()=>{
+  console.log("recaculou");
   if(turno)setTotalApresentado(calcularValorApresentar(turno))
 }, [totalSagrias])
 
   return (
     <ScrollView style={base.container}>
      
-      <Modal
+      <ModalBicos
         visible={true}
         nBomba={nBomba1} 
         setNBomba={setNBomba1}
@@ -84,13 +87,14 @@ useEffect(()=>{
         if(!novaBomba) return prev;
           const novoArray = [...prev];
           novoArray[0] =novaBomba;
+          setVisibleModalVendas(true)
           return novoArray;
 
         });
       }} // metodo que salva os ddos da primeira bomba
       />
 
-      <Modal
+      <ModalBicos
         visible={visible} // Set to true to show the modal
         nBomba={nBomba2} 
         setNBomba={setNBomba2}
@@ -132,6 +136,7 @@ useEffect(()=>{
       }
       
       <ModalVendas 
+      visibleModel={visibleModalVendas}
       multicaixa={multicaixa} 
       setMulticaixa={setMulticaixa} 
       codigoQR={codigoQR} 
@@ -149,11 +154,18 @@ useEffect(()=>{
         setTurno(calcularValoresDoTurno(turno))
         setTurnoStorge(turno)
         setVisibleSave(true)
+        setVisibleResult(true);
       }}
       visibleSave={visibleSave}
       save={()=>{if(turnoStorge)hendleSave(bombas,turnoStorge, user)}}
       />
-    
+      {turno?
+      <ModalResult
+        turno={turno}
+        setVisible={setVisibleResult}
+        visible={visibleResult}
+        save={()=>{}}    />:<></>}
+      
     </ScrollView>
       
 

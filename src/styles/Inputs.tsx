@@ -12,7 +12,7 @@ export const stylesBico = StyleSheet.create({
     gap: 10,
     justifyContent: "space-between",  
     alignItems: "center",
-
+    elevation: 4.1,
   },
   elements: {
     padding:10,
@@ -21,6 +21,7 @@ export const stylesBico = StyleSheet.create({
     borderColor:Tema.colors.border,
     borderWidth:Tema.sizes.border,
     borderStyle:"solid",
+
     color:Tema.colors.text,
     backgroundColor:Tema.colors.input,
   },
